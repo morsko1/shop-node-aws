@@ -15,6 +15,7 @@ functions:
       - http:
           path: products
           method: get
+          cors: true
 
   getProductsById:
     handler: handler.getProductsById
@@ -22,3 +23,4 @@ functions:
       - http:
           path: products/{productId}
           method: get
+          cors: true
