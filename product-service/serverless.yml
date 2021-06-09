@@ -8,6 +8,9 @@ provider:
   lambdaHashingVersion: 20201221
   region: eu-west-1
 
+plugins:
+  - serverless-webpack
+
 functions:
   getProductsList:
     handler: handler.getProductsList
