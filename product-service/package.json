@@ -16,8 +16,8 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "invoke:local:list": "sls invoke --local --function getProductsList",
-    "invoke:local:id": "sls invoke --local --function getProductsById -p eventMock.json"
+    "invoke:local:list": "sls invoke local --function getProductsList",
+    "invoke:local:id": "sls invoke local --function getProductsById -p eventMock.json"
   },
   "author": "",
   "license": "ISC"

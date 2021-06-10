@@ -11,26 +11,13 @@ const successResponse = {
   })
 };
 
-const failureResponse = {
-  statusCode: 500,
-  headers: {
-    'Access-Control-Allow-Origin': '*'
-  },
-  body: JSON.stringify({message: 'Internal server error'})
-};
-
 describe('getProductsList', () => {
 
-  test('getProductsList: success', () => {
-    return getProductsList().then(data => {
-      expect(data).toEqual(successResponse);
-    });
-  });
-
-  test('getProductsList: failure', () => {
-    return getProductsList().catch(data => {
-      expect(data).toEqual(failureResponse);
-    });
+  test('getProductsList: success', async () => {
+    expect(getProductsList()).resolves.toEqual(successResponse);
+    const res = await getProductsList();
+    const body = JSON.parse(res.body);
+    expect(body.data.length).toBe(8);
   });
 
 });

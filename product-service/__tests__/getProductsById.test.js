@@ -11,6 +11,16 @@ const successResponse = {
   })
 };
 
+const notFoundResponse = {
+  statusCode: 404,
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  body: JSON.stringify({
+    message: 'Product not found'
+  })
+};
+
 const failureResponse = {
   statusCode: 500,
   headers: {
@@ -22,27 +32,15 @@ const failureResponse = {
 describe('getProductsById', () => {
 
   test('getProductsById: success', () => {
-    return getProductsById({"pathParameters":{"productId":"4"}}).then(data => {
-      expect(data).toEqual(successResponse);
-    });
+    expect(getProductsById({"pathParameters":{"productId":"4"}})).resolves.toEqual(successResponse);
   });
 
-  test('getProductsById: failure', () => {
-    return getProductsById({"pathParameters":{"productId":"4"}}).catch(data => {
-      expect(data).toEqual(failureResponse);
-    });
-  });
-
-  test('getProductsById: wrong data in event', () => {
-    return getProductsById({"pathParameters":{"productId":"blabla"}}).catch(data => {
-      expect(data).toEqual(failureResponse);
-    });
+  test('getProductsById: not found', () => {
+    expect(getProductsById({"pathParameters":{"productId":"44"}})).resolves.toEqual(notFoundResponse);
   });
 
   test('getProductsById: invalid event', () => {
-    return getProductsById({}).catch(data => {
-      expect(data).toEqual(failureResponse);
-    });
+    expect(getProductsById({})).resolves.toEqual(failureResponse);
   });
 
 });
