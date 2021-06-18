@@ -2,11 +2,20 @@ service: product-service
 
 frameworkVersion: '2'
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   region: eu-west-1
+
+  environment:
+    PG_HOST: ${env:PG_HOST}
+    PG_PORT: ${env:PG_PORT}
+    PG_DBNAME: ${env:PG_DBNAME}
+    PG_USERNAME: ${env:PG_USERNAME}
+    PG_PASSWORD: ${env:PG_PASSWORD}
 
 plugins:
   - serverless-webpack
@@ -27,3 +36,6 @@ functions:
           path: products/{productId}
           method: get
           cors: true
+
+  initDB:
+    handler: handler.initDB
