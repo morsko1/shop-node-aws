@@ -3,7 +3,7 @@
     "id": "0",
     "title": "Atletico Madrid Home Kit",
     "price": 89,
-    "count": 10,
+    "count": 5,
     "description": "Atletico de Madrid Nike 2019/20 Home Replica Jersey - Red/White"
   },
   {
@@ -17,21 +17,21 @@
     "id": "2",
     "title": "Liverpool Home Kit",
     "price": 119,
-    "count": 10,
+    "count": 3,
     "description": "Liverpool Nike 2021/22 Home Vapor Match Authentic Jersey - Red"
   },
   {
     "id": "3",
     "title": "Liverpool Away Kit",
     "price": 119,
-    "count": 10,
+    "count": 7,
     "description": "Liverpool Nike 2020/21 Away Replica Jersey - Teal"
   },
   {
     "id": "4",
     "title": "Real Madrid Home Kit",
     "price": 99,
-    "count": 10,
+    "count": 5,
     "description": "Real Madrid adidas 2021 Home Authentic Patch Jersey - White"
   },
   {
@@ -45,14 +45,14 @@
     "id": "6",
     "title": "Bayern Munich Home Kit",
     "price": 109,
-    "count": 10,
+    "count": 6,
     "description": "Bayern Munich adidas 2020/21 Home Replica Jersey - Red"
   },
   {
     "id": "7",
     "title": "Bayern Munich Away Kit",
     "price": 109,
-    "count": 10,
+    "count": 9,
     "description": "Bayern Munich adidas 2021/22 Away Authentic Jersey - Black"
   }
 ]
