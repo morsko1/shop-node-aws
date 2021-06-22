@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import joi from 'joi';
 
 const { PG_HOST, PG_PORT, PG_DBNAME, PG_USERNAME, PG_PASSWORD } = process.env;
 
@@ -14,6 +15,13 @@ const options = {
   connectionTimeoutMillis: 5000
 };
 
+const ProductSchema = joi.object({
+  title: joi.string().required(),
+  description: joi.string().required(),
+  price: joi.number().required(),
+  count: joi.number().required()
+});
+
 const createProduct = async (event) => {
   let client;
   try {
@@ -22,6 +30,9 @@ const createProduct = async (event) => {
     await client.connect();
     const product = JSON.parse(event.body);
     console.log('createProduct product: ', product);
+
+    // validate product
+    await ProductSchema.validateAsync(product);
 
     const fillProductsQuery = {
       text: 'INSERT INTO products (title, description, price) VALUES ($1, $2, $3) RETURNING id',
@@ -44,6 +55,15 @@ const createProduct = async (event) => {
     };
   } catch (error) {
     console.log('createProduct error: ', error);
+    if (error.name === 'ValidationError' && error.isJoi) {
+      return {
+        statusCode: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        body: JSON.stringify({message: 'Validation Error'})
+      };
+    }
     return {
       statusCode: 500,
       headers: {

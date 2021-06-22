@@ -4,6 +4,7 @@
   "description": "",
   "main": "handler.js",
   "dependencies": {
+    "joi": "^17.4.0",
     "pg": "^8.6.0"
   },
   "devDependencies": {
