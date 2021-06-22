@@ -1,0 +1,59 @@
+import { Client } from 'pg';
+
+const { PG_HOST, PG_PORT, PG_DBNAME, PG_USERNAME, PG_PASSWORD } = process.env;
+
+const options = {
+  user: PG_USERNAME,
+  host: PG_HOST,
+  database: PG_DBNAME,
+  password: PG_PASSWORD,
+  port: PG_PORT,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  connectionTimeoutMillis: 5000
+};
+
+const createProduct = async (event) => {
+  let client;
+  try {
+    console.log('createProduct body: ', event.body);
+    client = new Client(options);
+    await client.connect();
+    const product = JSON.parse(event.body);
+    console.log('createProduct product: ', product);
+
+    const fillProductsQuery = {
+      text: 'INSERT INTO products (title, description, price) VALUES ($1, $2, $3) RETURNING id',
+      values: [product.title, product.description, product.price]
+    };
+    const fillProductsResult = await client.query(fillProductsQuery);
+
+    const id = fillProductsResult.rows[0].id;
+    const fillStocksQuery = {
+      text: 'INSERT INTO stocks (product_id, count) VALUES ($1, $2)',
+      values: [id, product.count]
+    };
+    await client.query(fillStocksQuery);
+    return {
+      statusCode: 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({message: `Product with id "${id}" has been successfully created`})
+    };
+  } catch (error) {
+    console.log('createProduct error: ', error);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({message: 'Internal server error'})
+    };
+  } finally {
+    client.end();
+  }
+};
+
+export default createProduct;

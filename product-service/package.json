@@ -20,7 +20,8 @@
     "coverage": "jest --coverage",
     "invoke:local:list": "sls invoke local --function getProductsList",
     "invoke:local:id": "sls invoke local --function getProductsById -p eventMock.json",
-    "invoke:local:db": "sls invoke local --function initDB"
+    "invoke:local:db": "sls invoke local --function initDB",
+    "invoke:local:create": "sls invoke local --function createProduct -p eventMock.json"
   },
   "author": "",
   "license": "ISC"
