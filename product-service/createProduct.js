@@ -23,11 +23,11 @@ const ProductSchema = joi.object({
 });
 
 const createProduct = async (event) => {
-  let client;
+  const client = new Client(options);
   try {
-    console.log('createProduct body: ', event.body);
-    client = new Client(options);
+    console.log('createProduct event: ', event);
     await client.connect();
+    await client.query('BEGIN');
     const product = JSON.parse(event.body);
     console.log('createProduct product: ', product);
 
@@ -46,6 +46,7 @@ const createProduct = async (event) => {
       values: [id, product.count]
     };
     await client.query(fillStocksQuery);
+    await client.query('COMMIT');
     return {
       statusCode: 201,
       headers: {
@@ -54,6 +55,7 @@ const createProduct = async (event) => {
       body: JSON.stringify({message: `Product with id "${id}" has been successfully created`})
     };
   } catch (error) {
+    await client.query('ROLLBACK');
     console.log('createProduct error: ', error);
     if (error.name === 'ValidationError' && error.isJoi) {
       return {
