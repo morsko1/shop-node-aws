@@ -17,6 +17,7 @@ const options = {
 const getProductsById = async (event) => {
   const client = new Client(options);
   try {
+    console.log('getProductsById event: ', event);
     const { productId = '' } = event.pathParameters;
     await client.connect();
     const query = {

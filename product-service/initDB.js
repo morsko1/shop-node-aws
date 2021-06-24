@@ -20,7 +20,6 @@ const initDB = async () => {
   let client;
   try {
     client = await pool.connect();
-    console.log('client =\n', client.database);
     /*
     products:
     id -  uuid (primary key)
