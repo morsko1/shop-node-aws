@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "handler.js",
-  "dependencies": {},
+  "dependencies": {
+    "joi": "^17.4.0",
+    "pg": "^8.6.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/plugin-transform-runtime": "^7.14.3",
@@ -17,7 +20,9 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "invoke:local:list": "sls invoke local --function getProductsList",
-    "invoke:local:id": "sls invoke local --function getProductsById -p eventMock.json"
+    "invoke:local:id": "sls invoke local --function getProductsById -p eventMockId.json",
+    "invoke:local:db": "sls invoke local --function initDB",
+    "invoke:local:create": "sls invoke local --function createProduct -p eventMockCreate.json"
   },
   "author": "",
   "license": "ISC"

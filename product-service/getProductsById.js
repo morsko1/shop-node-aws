@@ -1,9 +1,31 @@
-import mockData from './mockData.json';
+import { Client } from 'pg';
+
+const { PG_HOST, PG_PORT, PG_DBNAME, PG_USERNAME, PG_PASSWORD } = process.env;
+
+const options = {
+  user: PG_USERNAME,
+  host: PG_HOST,
+  database: PG_DBNAME,
+  password: PG_PASSWORD,
+  port: PG_PORT,
+  ssl: {
+    rejectUnauthorized: false
+  },
+  connectionTimeoutMillis: 5000
+};
 
 const getProductsById = async (event) => {
+  const client = new Client(options);
   try {
+    console.log('getProductsById event: ', event);
     const { productId = '' } = event.pathParameters;
-    const product = mockData.find(product => product.id === productId);
+    await client.connect();
+    const query = {
+      text: 'SELECT p.id, p.title, p.description, p.price, s.count FROM products p INNER JOIN stocks s ON p.id = s.product_id AND p.id = $1',
+      values: [productId]
+    };
+    const result = await client.query(query);
+    const product = result.rows[0];
 
     const res = product ? {data: product} : {message: 'Product not found'};
 
@@ -22,6 +44,8 @@ const getProductsById = async (event) => {
       },
       body: JSON.stringify({message: 'Internal server error'})
     };
+  } finally {
+    client.end();
   }
 };
 
