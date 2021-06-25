@@ -28,3 +28,14 @@ functions:
             parameters:
               querystrings:
                 name: true
+
+  importFileParser:
+    handler: handler.importFileParser
+    events:
+      - s3:
+          bucket: shop-import-service-bucket
+          existing: true
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploaded/
+            - suffix: .csv
