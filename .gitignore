@@ -120,6 +120,7 @@ dist
 # event for invoke --local
 eventMockId.json
 eventMockCreate.json
+eventMockImport.json
 
 # webpack
 .webpack

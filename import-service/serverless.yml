@@ -6,6 +6,12 @@ provider:
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
   region: eu-west-1
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action: "s3:*"
+          Resource: "arn:aws:s3:::shop-import-service-bucket/*"
 
 plugins:
   - serverless-webpack
@@ -13,3 +19,12 @@ plugins:
 functions:
   importProductsFile:
     handler: handler.importProductsFile
+    events:
+      - http:
+          path: import
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                name: true
