@@ -21,7 +21,7 @@ const failureResponse = {
   body: JSON.stringify({message: 'Internal server error'})
 };
 
-fdescribe('importProductsFile', () => {
+describe('importProductsFile', () => {
 
   test('importProductsFile: success', () => {
     getSignedUrl.mockResolvedValue('https://mysignedurl.com/test.csv');
