@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import csv from 'csv-parser';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
@@ -13,12 +13,12 @@ const importFileParser = async (event) => {
     console.log('bucketName = ', bucketName);
     console.log('bucketKey = ', bucketKey);
 
-    const command = new GetObjectCommand({
+    const getCommand = new GetObjectCommand({
       Bucket: bucketName,
       Key: bucketKey
     });
 
-    const { Body } = await s3Client.send(command);
+    const { Body } = await s3Client.send(getCommand);
 
     const processStream = (stream) => new Promise((resolve, reject) => {
       const chunks = [];
@@ -29,6 +29,27 @@ const importFileParser = async (event) => {
 
     const data = await processStream(Body);
     console.log('importFileParser data: ', data);
+
+    // copy file to parsed/ folder
+    const objectName = bucketKey.slice(bucketKey.lastIndexOf('/') + 1);
+    console.log('importFileParser objectName: ', objectName);
+    const copyCommand = new CopyObjectCommand({
+      Bucket: bucketName,
+      CopySource: `${bucketName}/${bucketKey}`,
+      Key: `parsed/${objectName}`
+    });
+
+    const copyRes = await s3Client.send(copyCommand);
+    console.log('importFileParser copyRes: ', copyRes);
+
+    // remove file from uploaded/ folder
+    const deleteCommand = new DeleteObjectCommand({
+      Bucket: bucketName,
+      Key: bucketKey
+    });
+
+    const deleteRes = await s3Client.send(deleteCommand);
+    console.log('importFileParser deleteRes: ', deleteRes);
 
     return {
       statusCode: 200,
