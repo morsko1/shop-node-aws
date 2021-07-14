@@ -1,0 +1,27 @@
+{
+  "name": "import-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.18.0",
+    "@aws-sdk/s3-request-presigner": "^3.18.0",
+    "csv-parser": "^3.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-loader": "^8.2.2",
+    "jest": "^27.0.4",
+    "serverless-webpack": "^5.5.0",
+    "webpack": "^5.38.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "invoke:local:import": "sls invoke local --function importProductsFile -p eventMockImport.json"
+  },
+  "author": "",
+  "license": "ISC"
+}
