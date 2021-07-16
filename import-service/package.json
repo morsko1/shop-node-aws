@@ -7,7 +7,9 @@
     "@aws-sdk/client-s3": "^3.18.0",
     "@aws-sdk/client-sqs": "^3.21.0",
     "@aws-sdk/s3-request-presigner": "^3.18.0",
-    "csv-parser": "^3.0.0"
+    "csv-parser": "^3.0.0",
+    "joi": "^17.4.1",
+    "pg": "^8.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -21,7 +23,8 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "invoke:local:import": "sls invoke local --function importProductsFile -p eventMockImport.json"
+    "invoke:local:import": "sls invoke local --function importProductsFile -p eventMockImport.json",
+    "invoke:local:sqs": "sls invoke local --function catalogBatchProcess -p eventMockSQS.json"
   },
   "author": "",
   "license": "ISC"
