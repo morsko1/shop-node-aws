@@ -20,6 +20,9 @@ provider:
             - Fn::GetAtt:
               - catalogItemsQueue
               - Arn
+        - Effect: "Allow"
+          Action: "sns:*"
+          Resource: ${env:SNS_ARN}
 
   environment:
     PG_HOST: ${env:PG_HOST}
@@ -28,6 +31,8 @@ provider:
     PG_USERNAME: ${env:PG_USERNAME}
     PG_PASSWORD: ${env:PG_PASSWORD}
     SQS_URL: ${env:SQS_URL}
+    SNS_ARN: ${env:SNS_ARN}
+    EMAIL_LIST: ${env:EMAIL_LIST}
 
 plugins:
   - serverless-webpack
@@ -38,6 +43,19 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "catalogItemsQueue"
+
+    createProductTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: createProductTopic
+
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Protocol: email
+        Endpoint: ${env:EMAIL_LIST}
+        TopicArn:
+          Ref: createProductTopic
 
 functions:
   importProductsFile:
