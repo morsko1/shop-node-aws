@@ -1,7 +1,10 @@
 import { Client } from 'pg';
 import joi from 'joi';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 
-const { PG_HOST, PG_PORT, PG_DBNAME, PG_USERNAME, PG_PASSWORD } = process.env;
+const { PG_HOST, PG_PORT, PG_DBNAME, PG_USERNAME, PG_PASSWORD, SNS_ARN } = process.env;
+
+const snsClient = new SNSClient({ region: 'eu-west-1' });
 
 const options = {
   user: PG_USERNAME,
@@ -53,6 +56,24 @@ const catalogBatchProcess = async (event) => {
       console.log('fillStocksResult = ', fillStocksResult);
       await client.query('COMMIT');
     }
+
+    const snsMessageText = `
+products
+\n\n
+${products.map(item => item.title).join(',\n')}
+\n\n
+have been successfully created
+`;
+
+    console.log('snsMessageText = ', snsMessageText);
+    const snsMessageParams = {
+      Subject: 'catalogBatchProcess notification',
+      Message: snsMessageText,
+      TopicArn: SNS_ARN
+    };
+
+    const snsResult = await snsClient.send(new PublishCommand(snsMessageParams));
+    console.log('snsResult = ', snsResult);
 
     return {
       statusCode: 200,
