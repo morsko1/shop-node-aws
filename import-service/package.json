@@ -8,6 +8,7 @@
     "@aws-sdk/client-sns": "^3.22.0",
     "@aws-sdk/client-sqs": "^3.21.0",
     "@aws-sdk/s3-request-presigner": "^3.18.0",
+    "aws-sdk-client-mock": "^0.5.3",
     "csv-parser": "^3.0.0",
     "joi": "^17.4.1",
     "pg": "^8.6.0"
