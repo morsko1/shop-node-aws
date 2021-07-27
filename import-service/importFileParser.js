@@ -1,7 +1,11 @@
 import { S3Client, GetObjectCommand, CopyObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import csv from 'csv-parser';
+import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
+
+const { SQS_URL } = process.env;
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
+const sqsClient = new SQSClient({ region: 'eu-west-1' });
 
 const importFileParser = async (event) => {
   try {
@@ -29,6 +33,15 @@ const importFileParser = async (event) => {
 
     const data = await processStream(Body);
     console.log('importFileParser data: ', data);
+
+    // send records to SQS
+    data.forEach(item => {
+      const message = new SendMessageCommand({
+        QueueUrl: SQS_URL,
+        MessageBody: JSON.stringify(item)
+      });
+      sqsClient.send(message);
+    });
 
     // copy file to parsed/ folder
     const objectName = bucketKey.slice(bucketKey.lastIndexOf('/') + 1);

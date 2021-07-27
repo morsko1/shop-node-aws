@@ -118,9 +118,7 @@ dist
 .pnp.*
 
 # event for invoke --local
-eventMockId.json
-eventMockCreate.json
-eventMockImport.json
+eventMock*.json
 
 # webpack
 .webpack
