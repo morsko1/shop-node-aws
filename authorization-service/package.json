@@ -1,0 +1,23 @@
+{
+  "name": "authorization-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-loader": "^8.2.2",
+    "jest": "^27.0.4",
+    "serverless-webpack": "^5.5.0",
+    "webpack": "^5.38.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "invoke:local:auth": "sls invoke local --function basicAuthorizer -p eventMockAuth.json"
+  },
+  "author": "",
+  "license": "ISC"
+}
