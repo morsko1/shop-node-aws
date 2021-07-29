@@ -40,6 +40,7 @@ provider:
     DLQ_URL: ${env:DLQ_URL}
     SNS_ARN: ${env:SNS_ARN}
     EMAIL_LIST: ${env:EMAIL_LIST}
+    AUTHORIZER_ARN: ${env:AUTHORIZER_ARN}
 
 plugins:
   - serverless-webpack
@@ -74,6 +75,26 @@ resources:
         TopicArn:
           Ref: createProductTopic
 
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
+    GatewayResponseDefault5XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+
 functions:
   importProductsFile:
     handler: handler.importProductsFile
@@ -81,6 +102,11 @@ functions:
       - http:
           path: import
           method: get
+          authorizer:
+            arn: ${env:AUTHORIZER_ARN}
+            managedExternally: false
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
           cors: true
           request:
             parameters:
