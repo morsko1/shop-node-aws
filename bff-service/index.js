@@ -1,12 +1,15 @@
 import express from 'express';
 import axios from 'axios';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 8080;
 
 app.use('*', async (req, res) => {
   try {
