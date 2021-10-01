@@ -19,7 +19,7 @@ app.use('*', async (req, res) => {
     const recipientServiceName = originalUrl.split('/')[1];
     const serviceUrl = process.env[recipientServiceName];
     console.log('serviceUrl = ', serviceUrl);
-    const recipientPath = originalUrl.slice(originalUrl.indexOf('/', 1));
+    const recipientPath = originalUrl.slice(originalUrl.indexOf('/'));
     console.log('recipientPath = ', recipientPath);
     const recipientURL = serviceUrl + recipientPath;
     console.log('recipientURL = ', recipientURL);
@@ -43,6 +43,7 @@ app.use('*', async (req, res) => {
     console.log('typeof response = ', typeof response.data);
     console.log('response = ', response.data);
 
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.send(JSON.stringify(response.data));
   } catch(error) {
     console.log('error = ', error);
