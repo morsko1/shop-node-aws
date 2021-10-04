@@ -19,7 +19,8 @@ app.use('*', async (req, res) => {
     const recipientServiceName = originalUrl.split('/')[1];
     const serviceUrl = process.env[recipientServiceName];
     console.log('serviceUrl = ', serviceUrl);
-    const recipientPath = originalUrl.slice(originalUrl.indexOf('/'));
+    const ind = originalUrl.indexOf('/', 1);
+    const recipientPath = ind !== -1 ? originalUrl.slice(ind) : '';
     console.log('recipientPath = ', recipientPath);
     const recipientURL = serviceUrl + recipientPath;
     console.log('recipientURL = ', recipientURL);
