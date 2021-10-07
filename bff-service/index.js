@@ -44,7 +44,7 @@ app.use('*', async (req, res) => {
     console.log('typeof response = ', typeof response.data);
     console.log('response = ', response.data);
 
-    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send(JSON.stringify(response.data));
   } catch(error) {
     console.log('error = ', error);
